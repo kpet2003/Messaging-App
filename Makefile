@@ -2,7 +2,7 @@ CC = gcc
 CFLAGS = -Wall -Werror -g
 LDFLAGS = -lm -lpthread -ldl -lrt
 OBJS_A = process_a.o shared_memory.o
-OBJS_B = process_b.o shared_memory.o  # Use the same shared_memory.o for both processes
+OBJS_B = process_b.o shared_memory.o  
 
 EXEC_A = process_a
 EXEC_B = process_b

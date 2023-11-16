@@ -14,7 +14,7 @@ char* memory_init(const char* name, int size ) {
 char* memory_open(const char* name,int size) {
     int mem = shm_open(name,O_RDONLY,0666);
 
-    char* string = (char*)mmap(0,size,PROT_READ| PROT_WRITE,MAP_SHARED,mem,0);
+    char* string = (char*)mmap(0,size,PROT_READ,MAP_SHARED,mem,0);
 
     return string;
 } 
