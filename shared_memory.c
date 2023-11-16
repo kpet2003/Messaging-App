@@ -8,9 +8,9 @@ char* memory_init(const char* name, int size ) {
 
     char* memory_block = (char*)mmap(0,size,PROT_READ| PROT_WRITE,MAP_SHARED,memory,0);
 
- 
-
-
     return memory_block;
+}
 
+void memory_free(const char* name) {
+    shm_unlink(name);
 }

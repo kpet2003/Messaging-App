@@ -8,3 +8,5 @@
 #include <sys/mman.h>
 
 char* memory_init(const char* name, int size );
+
+void memory_free(const char* name);
