@@ -1,23 +1,34 @@
 CC = gcc
+CFLAGS = -Wall -Werror -g
+LDFLAGS = -lm -lpthread -ldl -lrt
+OBJS_A = process_a.o shared_memory.o
+OBJS_B = process_b.o shared_memory.o  # Use the same shared_memory.o for both processes
 
-# Compile options. Το -I<dir> λέει στον compiler να αναζητήσει εκεί include files
-CFLAGS = -Wall -Werror -g 
+EXEC_A = process_a
+EXEC_B = process_b
 
-LDFLAGS =-lm -lpthread -ldl -lrt 
+all: $(EXEC_A) $(EXEC_B)
 
-OBJS = process_a.o shared_memory.o
+$(EXEC_A): $(OBJS_A)
+	$(CC) $(OBJS_A) -o $(EXEC_A) $(LDFLAGS)
 
-EXEC = process_a
+$(EXEC_B): $(OBJS_B)
+	$(CC) $(OBJS_B) -o $(EXEC_B) $(LDFLAGS)
 
-
-$(EXEC): $(OBJS)
-	$(CC) $(OBJS) -o $(EXEC) $(LDFLAGS) 
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJS) $(EXEC)
+	rm -f $(OBJS_A) $(OBJS_B) $(EXEC_A) $(EXEC_B)
 
-run: $(EXEC)
-	./$(EXEC) $(ARGS)
+run_a: $(EXEC_A)
+	./$(EXEC_A) $(ARGS)
 
-valgrind: $(EXEC)
-	valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all ./$(EXEC) $(ARGS)
+run_b: $(EXEC_B)
+	./$(EXEC_B) $(ARGS)
+
+valgrind_a: $(EXEC_A)
+	valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all ./$(EXEC_A) $(ARGS)
+
+valgrind_b: $(EXEC_B)
+	valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all ./$(EXEC_B) $(ARGS)
