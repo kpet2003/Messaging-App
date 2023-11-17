@@ -7,8 +7,6 @@
 #include <unistd.h>
 #include <sys/mman.h>
 
-char* memory_init(const char* name, int size );
-
-char* memory_open(const char* name,int size);
+char* memory_get(const char* name, int size );
 
 void memory_free(const char* name);

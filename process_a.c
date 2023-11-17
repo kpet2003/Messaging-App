@@ -3,13 +3,15 @@
 
 int main(int argc, char** argv) {
 
-    char* write_memory = memory_init("write",30);
+    char* write_memory = memory_get("a_writes",30);
 
-    sprintf(write_memory,"%s","Hello world\n");
+    sprintf(write_memory,"%s","Hello from a\n");
 
-    write_memory+=strlen("Hello world");
+    char* read_memory = memory_get("b_writes",30);
 
-    //memory_free("write");
+    write_memory+=strlen("Hello from a\n");
 
+    read_memory = memory_get("b_writes",30);
+    printf("%s",read_memory);
     return 0;
 }
