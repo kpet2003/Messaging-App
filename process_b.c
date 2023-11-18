@@ -1,15 +1,15 @@
 #include "shared_memory.h"
+#include "ipc_functions.h"
 #include <string.h>
+#include <pthread.h>
 
 int main(void) {
 
-    char* read_memory = memory_get("a_writes",30);
+    char* read_memory = memory_get("a_writes",4096);
+    char* write_memory = memory_get("b_writes",4096);
 
-    printf("%s",read_memory);
-
-    char* write_memory = memory_get("b_writes",30);
-
-    sprintf(write_memory,"%s","Hello from b\n");
+    read_message(read_memory);
+    write_message(write_memory);
 
     memory_free(read_memory);
 
