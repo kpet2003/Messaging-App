@@ -22,6 +22,7 @@ int main(void) {
     write_message(write_memory);
 
     memory_free(read_memory);
+    memory_free(write_memory);
 
     sem_close(writer_sem);
     sem_close(reader_sem);
