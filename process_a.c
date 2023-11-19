@@ -30,15 +30,22 @@ int main(int argc, char** argv) {
         exit(1);
     }
 
+    Arguements for_writing_thread = create_arguements(write_memory,writer_sem,reader_sem);
 
-    while(1) {
-        sem_wait(reader_sem);
-        write_message(write_memory);
-        sem_post(writer_sem);
-    }
 
-  
-    read_message(read_memory);
+
+    pthread_t writer_thread;
+
+    pthread_create(&writer_thread,NULL,send_message,for_writing_thread);
+    pthread_join(writer_thread,NULL);
+
+    Arguements for_reader_thread = create_arguements(read_memory,writer_sem,reader_sem);
+
+    pthread_t reader_thread;
+
+    pthread_create(&reader_thread,NULL,receive_message,for_reader_thread);
+    pthread_join(reader_thread,NULL);
+
 
     sem_close(reader_sem);
     sem_close(writer_sem);

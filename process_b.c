@@ -13,13 +13,21 @@ int main(void) {
     sem_t* writer_sem = sem_open(WRITER_SEMAPHORE_FOR_A,0);
     sem_t* reader_sem = sem_open(READER_SEMAPHORE_FOR_A,1);
 
-    while(1) {
-        sem_wait(writer_sem);
-        read_message(read_memory);
-        sem_post(reader_sem);
-    }
 
-    write_message(write_memory);
+    Arguements for_reader_thread = create_arguements(read_memory,writer_sem,reader_sem);
+
+    pthread_t reader_thread;
+
+    pthread_create(&reader_thread,NULL,receive_message,for_reader_thread);
+    pthread_join(reader_thread,NULL);
+
+
+    Arguements for_writer_thread = create_arguements(write_memory,reader_sem,writer_sem);
+
+    pthread_t writer_thread;
+    pthread_create(&writer_thread,NULL,send_message,for_writer_thread);
+    pthread_join(writer_thread,NULL);
+
 
     memory_free(read_memory);
     memory_free(write_memory);
