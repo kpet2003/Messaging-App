@@ -1,7 +1,7 @@
 # include "ipc_functions.h"
 
 static void print_message(char* memory) {
-    printf("Received message: %s",memory);
+    printf("\nReceived message: %s",memory);
 }
 
 static char* get_message(void) {
@@ -22,8 +22,10 @@ void* send_message(void* shared_memory) {
     Memory memory = (Memory)shared_memory;
 
     while(true) {
+        pthread_mutex_lock(&memory->mutex);
         write_message(memory->buffer);
         sem_post(&memory->writer_sem);
+        pthread_mutex_unlock(&memory->mutex);
     }
     return NULL;
 }
