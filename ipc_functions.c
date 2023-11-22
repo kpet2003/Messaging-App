@@ -7,7 +7,7 @@ static void print_message(char* memory) {
 static char* get_message(void) {
     printf("Write message: ");
     char* message = malloc(15*sizeof(char));
-    fgets(message,sizeof(message),stdin);
+    fgets(message,15*sizeof(char),stdin);
     return message;
 }
 
