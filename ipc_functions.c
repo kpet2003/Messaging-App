@@ -37,6 +37,7 @@ void* receive_message(void* shared_memory) {
         print_message(memory->buffer);
         sem_post(&memory->reader_sem);
     }
+    return NULL;
 }
 
 

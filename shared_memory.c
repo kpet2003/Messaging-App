@@ -36,7 +36,13 @@ Memory memory_init(const char* name) {
         exit(1);
     }
 
-    pthread_mutex_init(&memory_block->mutex, NULL);
+    error_code =  pthread_mutex_init(&memory_block->mutex, NULL);
+
+    if(error_code == -1) {
+        perror("mutex");
+        exit(1);
+    }
+
     return memory_block;
 }
 
