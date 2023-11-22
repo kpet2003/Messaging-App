@@ -1,9 +1,5 @@
 #include "shared_memory.h"
 
-#define WRITER_SEMAPHORE_FOR_A "/writer_sem"
-#define READER_SEMAPHORE_FOR_A "/reader_sem"
+void* send_message(void* shared_memory);
+void* receive_message(void* shared_memory);
 
-
-void* write_message(char* memory);
-
-void* read_message(char* memory);

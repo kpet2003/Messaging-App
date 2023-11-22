@@ -11,6 +11,20 @@
 #include <semaphore.h>
 #include <stdbool.h>
 
-char* memory_get(const char* name, int size );
+#define BUFFER_SIZE 15
+
+struct memory {
+    char buffer[BUFFER_SIZE];
+    sem_t writer_sem;
+    sem_t reader_sem;
+    pthread_mutex_t mutex;
+};
+
+typedef struct memory* Memory;
+
+
+Memory memory_init(const char* name );
+
+Memory memory_open(const char* name);
 
 void memory_free(const char* name);
