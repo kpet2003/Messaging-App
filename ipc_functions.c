@@ -20,14 +20,21 @@ static void write_message(char* memory) {
 
 void* send_message(void* shared_memory) {
     Memory memory = (Memory)shared_memory;
-    write_message(memory->buffer);     
+
+    while(true) {
+        write_message(memory->buffer);
+        sem_post(&memory->writer_sem);
+    }
     return NULL;
 }
 
 void* receive_message(void* shared_memory) {
     Memory memory = (Memory)shared_memory;
-    print_message(memory->buffer);
-    return NULL;
+    while(true) {
+        sem_wait(&memory->writer_sem);
+        print_message(memory->buffer);
+        sem_post(&memory->reader_sem);
+    }
 }
 
 
