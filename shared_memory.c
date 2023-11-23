@@ -36,13 +36,6 @@ Memory memory_init(const char* name) {
         exit(1);
     }
 
-    error_code =  pthread_mutex_init(&memory_block->mutex, NULL);
-
-    if(error_code == -1) {
-        perror("mutex");
-        exit(1);
-    }
-
     return memory_block;
 }
 
@@ -66,5 +59,9 @@ Memory memory_open(const char* name) {
 
 
 void memory_free(const char* name) {
-   shm_unlink(name);
+    Memory mem = memory_open(name);
+    shm_unlink(name);
+    sem_close(&mem->reader_sem);
+    sem_close(&mem->writer_sem);
+    munmap(mem,sizeof(*mem));
 }

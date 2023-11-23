@@ -17,7 +17,6 @@ struct memory {
     char buffer[BUFFER_SIZE];
     sem_t writer_sem;
     sem_t reader_sem;
-    pthread_mutex_t mutex;
 };
 
 typedef struct memory* Memory;

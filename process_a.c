@@ -15,7 +15,8 @@ int main(void) {
     pthread_join(reader,NULL);
     pthread_join(writer,NULL);
 
-
+    memory_free("b_writes");
+    memory_free("a_writes");
 
     return 0;
 }

@@ -1,11 +1,10 @@
 # include "ipc_functions.h"
 
 static void print_message(char* memory) {
-    printf("\nReceived message: %s",memory);
+    printf("%s",memory);
 }
 
 static char* get_message(void) {
-    printf("Write message: ");
     char* message = malloc(15*sizeof(char));
     fgets(message,15*sizeof(char),stdin);
     return message;
@@ -20,18 +19,16 @@ static void write_message(char* memory) {
 
 void* send_message(void* shared_memory) {
     Memory memory = (Memory)shared_memory;
-
     while(true) {
-        pthread_mutex_lock(&memory->mutex);
         write_message(memory->buffer);
         sem_post(&memory->writer_sem);
-        pthread_mutex_unlock(&memory->mutex);
     }
     return NULL;
 }
 
 void* receive_message(void* shared_memory) {
     Memory memory = (Memory)shared_memory;
+   
     while(true) {
         sem_wait(&memory->writer_sem);
         print_message(memory->buffer);
