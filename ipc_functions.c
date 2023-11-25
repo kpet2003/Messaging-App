@@ -38,9 +38,13 @@ void* send_message(void* data) {
     Memory memory = my_data->shared_memory;
     while(true) {
         write_message(memory->buffer);
+        if(!strncmp(END_MESSAGE,memory->buffer,5)) {
+            my_data->shared_memory->communication_ended = true;
+            break;
+        }
         sem_post(&memory->writer_sem);
     }
-    return NULL;
+    return my_data;
 }
 
 void* receive_message(void* data) {
@@ -51,9 +55,11 @@ void* receive_message(void* data) {
     while(true) {
         sem_wait(&memory->writer_sem);
         print_message(memory->buffer);
-        sem_post(&memory->reader_sem);
+        if(memory->communication_ended) {
+            break;
+        }
     }
-    return NULL;
+    return my_data;
 }
 
 
