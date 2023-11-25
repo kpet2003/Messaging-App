@@ -1,4 +1,6 @@
 #include "shared_memory.h"
+#define MAX_SIZE 4096
+#define END_MESSAGE "#BYE#"
 
 struct process_stats {
     int sent_messages;
@@ -13,7 +15,7 @@ typedef struct process_stats* Stats;
 struct thread_data {
     Memory shared_memory;
     bool communication_ended;
-    char message[4096];
+    char message[MAX_SIZE];
     Stats stats;
 };
 
