@@ -9,8 +9,11 @@ int main(void) {
     pthread_t writer;
     pthread_t reader;
 
-    pthread_create(&writer,NULL,send_message,write_memory);
-    pthread_create(&reader,NULL,receive_message,read_memory);
+    Data write_data = data_init(write_memory);
+    Data read_data = data_init(read_memory);
+
+    pthread_create(&writer,NULL,send_message,write_data);
+    pthread_create(&reader,NULL,receive_message,read_data);
 
     pthread_join(writer,NULL);
     pthread_join(reader,NULL);
