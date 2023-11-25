@@ -14,7 +14,6 @@ typedef struct process_stats* Stats;
 
 struct thread_data {
     Memory shared_memory;
-    bool communication_ended;
     char message[MAX_SIZE];
     Stats stats;
 };

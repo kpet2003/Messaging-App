@@ -13,7 +13,6 @@ Stats stats_init(void) {
 Data data_init(Memory m) {
     Data data = malloc(sizeof(struct thread_data));
     data->shared_memory = m;
-    data->communication_ended = false;
     data->stats = stats_init();
     return data;
 }

@@ -36,6 +36,8 @@ Memory memory_init(const char* name) {
         exit(1);
     }
 
+    memory_block->communication_ended = false;
+
     return memory_block;
 }
 
