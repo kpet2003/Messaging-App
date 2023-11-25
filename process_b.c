@@ -15,8 +15,11 @@ int main(void) {
     pthread_create(&writer,NULL,send_message,write_data);
     pthread_create(&reader,NULL,receive_message,read_data);
 
-    pthread_join(writer,NULL);
-    pthread_join(reader,NULL);
+    pthread_join(writer,(void**)&write_data);
+    pthread_join(reader,(void**)&read_data);
+
+    printf("Process_b sent %d messages\n",write_data->stats->sent_messages);
+    printf("Process_b received %d messages\n",read_data->stats->received_messages);
 
     memory_free("b_writes");
     memory_free("a_writes");

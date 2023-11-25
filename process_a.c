@@ -10,15 +10,20 @@ int main(void) {
 
     Data write_data = data_init(write_memory);
     Data read_data = data_init(read_memory);
-   
-    pthread_create(&reader,NULL,receive_message,read_data);
+    
     pthread_create(&writer,NULL,send_message,write_data);
+    pthread_create(&reader,NULL,receive_message,read_data);
+    
+    pthread_join(writer,(void**)&write_data);
+    pthread_join(reader,(void**)&read_data);
 
-    pthread_join(reader,NULL);
-    pthread_join(writer,NULL);
+    printf("Process_a sent %d messages\n",write_data->stats->sent_messages);
+    printf("Process_a received %d messages\n",read_data->stats->received_messages);
 
-    memory_free("b_writes");
+    
     memory_free("a_writes");
+    memory_free("b_writes");
+    
 
     return 0;
 }

@@ -1,5 +1,6 @@
 # include "ipc_functions.h"
 
+
 Stats stats_init(void) {
     Stats st = malloc(sizeof(struct process_stats));
     st->received_messages = 0;
@@ -19,7 +20,9 @@ Data data_init(Memory m) {
 
 static void print_message(char* memory) {
    fputs(memory,stdout);
+   return;
 }
+
 static char* get_message(void) {
     char* message = malloc(15*sizeof(char));
     fgets(message,15*sizeof(char),stdin);
@@ -38,11 +41,13 @@ void* send_message(void* data) {
     Memory memory = my_data->shared_memory;
     while(true) {
         write_message(memory->buffer);
+        my_data->stats->sent_messages++;
+        sem_post(&memory->writer_sem);
         if(!strncmp(END_MESSAGE,memory->buffer,5)) {
-            my_data->shared_memory->communication_ended = true;
+            memory->communication_ended = true;
+            my_data->shared_memory = memory;
             break;
         }
-        sem_post(&memory->writer_sem);
     }
     return my_data;
 }
@@ -50,20 +55,24 @@ void* send_message(void* data) {
 void* receive_message(void* data) {
     Data my_data = (Data)data;
     Memory memory = my_data->shared_memory;
-
-   
     while(true) {
+        
         sem_wait(&memory->writer_sem);
         print_message(memory->buffer);
-        if(memory->communication_ended) {
+        my_data->stats->received_messages++;
+        if(!strncmp(END_MESSAGE,memory->buffer,5)) {
+            memory->communication_ended = true;
+            my_data->shared_memory = memory;
             break;
         }
+ 
     }
     return my_data;
 }
 
-
-
+Stats calculate_stats(Stats s) {
+    return s;
+}
 
 
 
