@@ -44,7 +44,6 @@ void* send_message(void* data) {
         my_data->stats->sent_messages++;
         sem_post(&memory->writer_sem);
         if(!strncmp(END_MESSAGE,memory->buffer,5)) {
-            //memory->communication_ended = true;
             my_data->shared_memory = memory;
             break;
         }
@@ -61,7 +60,6 @@ void* receive_message(void* data) {
         print_message(memory->buffer);
         my_data->stats->received_messages++;
         if(!strncmp(END_MESSAGE,memory->buffer,5)) {
-            //memory->communication_ended = true;
             my_data->shared_memory = memory;
             break;
         }
