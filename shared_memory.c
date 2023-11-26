@@ -30,7 +30,7 @@ Memory memory_init(const char* name) {
         perror("writer semaphore");
         exit(1);
     }
-    memory_block->communication_ended = false;
+    memory_block->message_sent = false;
 
     return memory_block;
 }

@@ -17,11 +17,10 @@
 struct memory {
     char buffer[BUFFER_SIZE];
     sem_t writer_sem;
-    bool communication_ended;
+    bool message_sent;
 };
 
 typedef struct memory* Memory;
-
 
 Memory memory_init(const char* name );
 
