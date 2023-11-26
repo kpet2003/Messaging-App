@@ -5,9 +5,11 @@ Stats stats_init(void) {
     Stats st = malloc(sizeof(struct process_stats));
     st->received_messages = 0;
     st->sent_messages = 0;
-    st->total_segments = 0;
+    st->total_segments_received = 0;
+    st->total_segments_sent = 0;
     st->average_time = 0;
-    st->average_segments = 0;
+    st->average_segments_sent = 0;
+    st->average_segments_received=0;
     return st;
 }
 
