@@ -18,6 +18,8 @@ struct memory {
     char buffer[BUFFER_SIZE];
     sem_t writer_sem;
     bool message_sent;
+    int segments_sent;
+    int total_segments;
 };
 
 typedef struct memory* Memory;

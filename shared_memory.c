@@ -31,7 +31,8 @@ Memory memory_init(const char* name) {
         exit(1);
     }
     memory_block->message_sent = false;
-
+    memory_block->segments_sent = 0;
+    
     return memory_block;
 }
 
