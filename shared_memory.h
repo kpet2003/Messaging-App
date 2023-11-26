@@ -10,6 +10,7 @@
 #include <string.h>
 #include <semaphore.h>
 #include <stdbool.h>
+#include <math.h>
 
 #define BUFFER_SIZE 15
 
