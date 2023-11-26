@@ -24,5 +24,5 @@ int main(void) {
     memory_free("b_writes");
     memory_free("a_writes");
 
-    return 0;
+    return 1;
 }
