@@ -26,4 +26,3 @@ Data data_init(Memory mem);
 Stats stats_init(void);
 void* send_message(void* shared_memory);
 void* receive_message(void* shared_memory);
-

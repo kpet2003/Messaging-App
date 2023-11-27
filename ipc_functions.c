@@ -55,12 +55,13 @@ static void get_from_buffer(Data data) {
     int index = data->shared_memory->segments_sent*BUFFER_SIZE;
     memcpy(data->message_to_receive+index,data->shared_memory->buffer,BUFFER_SIZE);
     data->shared_memory->segments_sent++;
-    data->stats->total_segments_received+=data->shared_memory->total_segments;
 
     if(data->shared_memory->segments_sent==data->shared_memory->total_segments) {
         data->shared_memory->message_sent = true;
     }
 }
+
+
 
 void* send_message(void* data) {
     Data my_data = (Data)data;
@@ -70,7 +71,7 @@ void* send_message(void* data) {
         }
         send_to_buffer(my_data);
         sem_post(&my_data->shared_memory->writer_sem);
-        if(!strncmp(END_MESSAGE,my_data->message_to_send,5)) {  
+        if(!strncmp(END_MESSAGE,my_data->message_to_send,5)) {
             break;
         }
     }
@@ -98,5 +99,4 @@ void* receive_message(void* data) {
     }
     return my_data;
 }
-
 
