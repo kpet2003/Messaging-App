@@ -30,6 +30,14 @@ Memory memory_init(const char* name) {
         perror("writer semaphore");
         exit(1);
     }
+
+    error_code = pthread_mutex_init(&memory_block->mutex,NULL);
+    if(error_code == -1) {
+        perror("mutex");
+        exit(1);
+    }
+
+
     memory_block->message_sent = false;
     memory_block->segments_sent = 0;
     

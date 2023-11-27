@@ -20,6 +20,7 @@ struct memory {
     bool message_sent;
     int segments_sent;
     int total_segments;
+    pthread_mutex_t mutex;
 };
 
 typedef struct memory* Memory;
