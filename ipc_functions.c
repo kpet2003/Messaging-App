@@ -29,15 +29,20 @@ static char* get_message(void) {
     return message;
 }
 
+static void clear_string(char* string) {
+    string[0] = '\0';
+}
+
 static void write_message(Data data) {
     char* message = get_message();
     data->stats->sent_messages++;
+    for(int i=0; i<data->shared_memory->total_segments; i++) {
+        clear_string(data->message_segments[i]);
+    }
     data->shared_memory->total_segments = ((strlen(message)+14)/15);
     data->stats->total_segments_sent+=data->shared_memory->total_segments;
     memcpy(data->message_to_send,message,strlen(message)+1);
-    
-
-    
+     
     for(int i=0; i<data->shared_memory->total_segments; i++) {
         memcpy(data->message_segments[i],data->message_to_send+BUFFER_SIZE*i  ,BUFFER_SIZE);
     }
@@ -45,19 +50,19 @@ static void write_message(Data data) {
     free(message);
 }
 
+
+
 static void send_to_buffer(Data data) {
     int index = data->shared_memory->segments_sent;
     memcpy(data->shared_memory->buffer,data->message_segments[index],BUFFER_SIZE);
 }
 
 static void get_from_buffer(Data data) {
-    int index = data->shared_memory->segments_sent*BUFFER_SIZE;
-    memcpy(data->message_to_receive+index,data->shared_memory->buffer,BUFFER_SIZE);
-    data->shared_memory->segments_sent++;
-
-    if(data->shared_memory->segments_sent==data->shared_memory->total_segments) {
-        data->shared_memory->message_sent = true;
+    if(!data->shared_memory->segments_sent) {
+        clear_string(data->message_to_receive);
     }
+    strcat(data->message_to_receive,data->shared_memory->buffer);
+    data->shared_memory->segments_sent++;
 }
 
 
@@ -65,7 +70,8 @@ static void get_from_buffer(Data data) {
 void* send_message(void* data) {
     Data my_data = (Data)data;
     while(true) {
-        if(my_data->shared_memory->segments_sent==0) {
+        if(!my_data->shared_memory->segments_sent) {
+            clear_string(my_data->message_to_send);
             write_message(my_data);
         }
         send_to_buffer(my_data);
@@ -82,6 +88,7 @@ void* receive_message(void* data) {
 
     while(true) {
         sem_wait(&my_data->shared_memory->writer_sem);
+        printf("in receive\n");
         get_from_buffer(my_data);
         if(my_data->shared_memory->segments_sent==my_data->shared_memory->total_segments) {
             print_message(my_data->message_to_receive);
