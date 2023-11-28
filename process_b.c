@@ -19,15 +19,15 @@ int main(void) {
     pthread_join(reader,(void**)&read_data);
 
     printf("Process_b sent %d messages\n",write_data->stats->sent_messages);
-    printf("Process_b received %d messages\n",read_data->stats->received_messages);
     printf("Process_b sent %d message segments\n",write_data->stats->total_segments_sent);
+    printf("Process_b sent %lf message segments average\n", (double)write_data->stats->total_segments_sent / (double)write_data->stats->sent_messages);
+    printf("Process_b received %d messages\n",read_data->stats->received_messages);
     printf("Process_b received %d message segments\n",read_data->stats->total_segments_received);
-    printf("Process_b sent %lf message segments average\n",(double)write_data->stats->total_segments_sent / (double)write_data->stats->sent_messages);
     printf("Process_b received %lf message segments average\n",(double)read_data->stats->total_segments_received / (double)read_data->stats->received_messages);
 
     memory_free("b_writes");
     
-    
+
     destroy_data(write_data);
     destroy_data(read_data);
 
