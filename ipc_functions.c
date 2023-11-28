@@ -83,9 +83,10 @@ void* receive_message(void* data) {
     while(true) {
         sem_wait(&my_data->shared_memory->writer_sem);
         get_from_buffer(my_data);
-        if(my_data->shared_memory->message_sent) {
-            print_message(my_data->message_to_receive);      
+        if(my_data->shared_memory->segments_sent==my_data->shared_memory->total_segments) {
+            print_message(my_data->message_to_receive);
             my_data->stats->received_messages++;
+            my_data->stats->total_segments_received+=my_data->shared_memory->total_segments;      
             my_data->shared_memory->segments_sent = 0;
             my_data->shared_memory->message_sent = false;
         }
