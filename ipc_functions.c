@@ -36,10 +36,9 @@ static void write_message(Data data) {
     data->stats->total_segments_sent+=data->shared_memory->total_segments;
     memcpy(data->message_to_send,message,strlen(message)+1);
     
-    data->message_segments = malloc(data->shared_memory->total_segments*sizeof(char*));
+
     
     for(int i=0; i<data->shared_memory->total_segments; i++) {
-        data->message_segments[i] = malloc(BUFFER_SIZE*sizeof(char));
         memcpy(data->message_segments[i],data->message_to_send+BUFFER_SIZE*i  ,BUFFER_SIZE);
     }
     
@@ -100,3 +99,11 @@ void* receive_message(void* data) {
     return my_data;
 }
 
+void destroy_stats(Stats s) {
+    free(s);
+}
+
+void destroy_data(Data data) {
+    destroy_stats(data->stats);
+    free(data);
+}

@@ -16,7 +16,7 @@ struct thread_data {
     Memory shared_memory;
     char message_to_send[MAX_SIZE];
     char message_to_receive[MAX_SIZE];
-    char** message_segments;
+    char message_segments[MAX_SIZE/BUFFER_SIZE][BUFFER_SIZE+1];
     Stats stats;
 };
 
@@ -26,3 +26,5 @@ Data data_init(Memory mem);
 Stats stats_init(void);
 void* send_message(void* shared_memory);
 void* receive_message(void* shared_memory);
+void  destroy_stats(Stats s);
+void  destroy_data(Data d);

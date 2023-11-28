@@ -28,7 +28,8 @@ int main(void) {
 
 
     memory_free("a_writes");
-    memory_free("b_writes");
+    destroy_data(write_data);
+    destroy_data(read_data);
     
 
     return 0;

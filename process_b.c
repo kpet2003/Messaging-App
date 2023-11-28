@@ -26,7 +26,10 @@ int main(void) {
     printf("Process_b received %lf message segments average\n",(double)read_data->stats->total_segments_received / (double)read_data->stats->received_messages);
 
     memory_free("b_writes");
-    memory_free("a_writes");
+    
+    
+    destroy_data(write_data);
+    destroy_data(read_data);
 
     return 1;
 }
