@@ -71,11 +71,13 @@ void* send_message(void* data) {
     Data my_data = (Data)data;
     while(true) {
         sem_wait(&my_data->shared_memory->reader_sem);
+        pthread_mutex_lock(&my_data->shared_memory->mutex);
         if(!my_data->shared_memory->segments_sent) {
             clear_string(my_data->message_to_send);
             write_message(my_data);
         }
         send_to_buffer(my_data);
+        pthread_mutex_unlock(&my_data->shared_memory->mutex);
         sem_post(&my_data->shared_memory->writer_sem);
         if(!strncmp(END_MESSAGE,my_data->message_to_send,5)) {
             break;
@@ -89,6 +91,7 @@ void* receive_message(void* data) {
 
     while(true) {
         sem_wait(&my_data->shared_memory->writer_sem);
+        pthread_mutex_lock(&my_data->shared_memory->mutex);
         get_from_buffer(my_data);
         if(my_data->shared_memory->segments_sent==my_data->shared_memory->total_segments) {
             print_message(my_data->message_to_receive);
@@ -97,6 +100,7 @@ void* receive_message(void* data) {
             my_data->shared_memory->segments_sent = 0;
             my_data->shared_memory->message_sent = false;
         }
+        pthread_mutex_unlock(&my_data->shared_memory->mutex);
         sem_post(&my_data->shared_memory->reader_sem);
         
         if(!strncmp(END_MESSAGE,my_data->shared_memory->buffer,5)) {
