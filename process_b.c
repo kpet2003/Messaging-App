@@ -3,6 +3,8 @@
 
 int main(void) {
 
+    // everything is the same with process a, except process_b just opens the memory segments
+
     Memory write_memory = memory_open("b_writes");
     Memory read_memory = memory_open("a_writes");
 
@@ -24,9 +26,10 @@ int main(void) {
     printf("Process_b received %d messages\n",read_data->stats->received_messages);
     printf("Process_b received %d message segments\n",read_data->stats->total_segments_received);
     printf("Process_b received %lf message segments average\n",(double)read_data->stats->total_segments_received / (double)read_data->stats->received_messages);
+    printf("Process_b waited %ld seconds for the first segment average\n ");
 
     memory_free("b_writes");
-    
+
 
     destroy_data(write_data);
     destroy_data(read_data);
