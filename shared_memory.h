@@ -10,7 +10,7 @@
 #include <string.h>
 #include <semaphore.h>
 #include <stdbool.h>
-#include <math.h>
+
 
 #define BUFFER_SIZE 15
 
@@ -22,7 +22,6 @@ struct memory {
     int segments_sent;
     int total_segments;
     pthread_mutex_t mutex;
-    bool finished;
 };
 
 typedef struct memory* Memory;

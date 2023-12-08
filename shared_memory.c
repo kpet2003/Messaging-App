@@ -50,7 +50,7 @@ Memory memory_init(const char* name) {
 
     memory_block->message_sent = false;
     memory_block->segments_sent = 0;
-    memory_block->finished = false;
+   
     
     return memory_block;
 }
