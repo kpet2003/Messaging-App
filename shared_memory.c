@@ -31,6 +31,12 @@ Memory memory_init(const char* name) {
         exit(1);
     }
 
+    error_code = sem_init(&memory_block->reader_sem,1,1);
+    if(error_code == -1) {
+        perror("writer semaphore");
+        exit(1);
+    }
+
     error_code = pthread_mutex_init(&memory_block->mutex,NULL);
     if(error_code == -1) {
         perror("mutex");
@@ -67,5 +73,6 @@ void memory_free(const char* name) {
     Memory mem = memory_open(name);
     shm_unlink(name);
     sem_close(&mem->writer_sem);
+    sem_close(&mem->reader_sem);
     munmap(mem,sizeof(*mem));
 }

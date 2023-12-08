@@ -70,6 +70,7 @@ static void get_from_buffer(Data data) {
 void* send_message(void* data) {
     Data my_data = (Data)data;
     while(true) {
+        sem_wait(&my_data->shared_memory->reader_sem);
         if(!my_data->shared_memory->segments_sent) {
             clear_string(my_data->message_to_send);
             write_message(my_data);
@@ -96,13 +97,14 @@ void* receive_message(void* data) {
             my_data->shared_memory->segments_sent = 0;
             my_data->shared_memory->message_sent = false;
         }
-
+        sem_post(&my_data->shared_memory->reader_sem);
         
         if(!strncmp(END_MESSAGE,my_data->shared_memory->buffer,5)) {
             break;
         }
  
     }
+    printf("after loop\n");
     return my_data;
 }
 
