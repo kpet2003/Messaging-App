@@ -21,14 +21,3 @@ $(EXEC_B): $(OBJS_B)
 clean:
 	rm -f $(OBJS_A) $(OBJS_B) $(EXEC_A) $(EXEC_B)
 
-run_a: $(EXEC_A)
-	./$(EXEC_A) $(ARGS)
-
-run_b: $(EXEC_B)
-	./$(EXEC_B) $(ARGS)
-
-valgrind_a: $(EXEC_A)
-	valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all ./$(EXEC_A) $(ARGS)
-
-valgrind_b: $(EXEC_B)
-	valgrind --error-exitcode=1 --leak-check=full --show-leak-kinds=all ./$(EXEC_B) $(ARGS)
