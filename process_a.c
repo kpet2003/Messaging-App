@@ -32,7 +32,7 @@ int main(void) {
     printf("Process_a received %d messages\n",read_data->stats->received_messages);
     printf("Process_a received %d message segments\n",read_data->stats->total_segments_received);
     printf("Process_a received %lf message segments average\n",(double)read_data->stats->total_segments_received / (double)read_data->stats->received_messages);
-    printf("Process_a waited %ld seconds for the first segment average\n ");
+    printf("Process_a waited %lf seconds for the first segment average\n ",(double)read_data->stats->total_time_waited/(double)read_data->stats->received_messages);
 
 
     // free all memory and destroy the threads

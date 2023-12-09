@@ -26,7 +26,7 @@ int main(void) {
     printf("Process_b received %d messages\n",read_data->stats->received_messages);
     printf("Process_b received %d message segments\n",read_data->stats->total_segments_received);
     printf("Process_b received %lf message segments average\n",(double)read_data->stats->total_segments_received / (double)read_data->stats->received_messages);
-    printf("Process_b waited %ld seconds for the first segment average\n ");
+    printf("Process_b waited %lf seconds for the first segment average\n ",read_data->stats->total_time_waited/read_data->stats->received_messages);
 
     memory_free("b_writes");
 

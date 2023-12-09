@@ -7,7 +7,7 @@ struct process_stats {
     int received_messages;
     int total_segments_sent;
     int total_segments_received;
-    double average_time;
+    double total_time_waited;
 };
 
 typedef struct process_stats* Stats;

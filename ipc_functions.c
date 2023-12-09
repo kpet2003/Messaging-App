@@ -1,13 +1,13 @@
 # include "ipc_functions.h"
 
-// initialise stats struct
+// initialise stats struct //
 Stats stats_init(void) {
     Stats st = malloc(sizeof(struct process_stats));
     st->received_messages = 0;
     st->sent_messages = 0;
     st->total_segments_received = 0;
     st->total_segments_sent = 0;
-    st->average_time = 0;
+    st->total_time_waited = 0;
     return st;
 }
 // initialise thread data
@@ -17,6 +17,15 @@ Data data_init(Memory m) {
     data->stats = stats_init();
     return data;
 }
+
+// calculate time difference in seconds
+double time_diff(struct timeval *start, struct timeval *end) {
+    return (double)(end->tv_sec - start->tv_sec) + 
+           (double)(end->tv_usec - start->tv_usec) / 1000000.0;
+}
+
+
+
 // print received message
 static void print_message(char* memory) {
    fputs(memory,stdout);
@@ -37,6 +46,9 @@ static void clear_string(char* string) {
 static void write_message(Data data) {
     char* message = get_message();
     data->stats->sent_messages++;
+    
+    // get the time that we got the message from user
+    gettimeofday(&data->shared_memory->start, NULL);
 
     // we clear the old message segments
     for(int i=0; i<data->shared_memory->total_segments; i++) {
@@ -71,6 +83,11 @@ static void get_from_buffer(Data data) {
     }
     // append each segment in the message to receive segment
     strcat(data->message_to_receive,data->shared_memory->buffer);
+    if(!data->shared_memory->segments_sent) {
+        // get the time that we got the first message segment and add it to the total time that we waited for the first segment
+        gettimeofday(&data->shared_memory->end, NULL);
+        data->stats->total_time_waited+=time_diff(&data->shared_memory->start,&data->shared_memory->end);
+    }
     data->shared_memory->segments_sent++;
 }
 
@@ -113,7 +130,6 @@ void* receive_message(void* data) {
             my_data->stats->received_messages++;
             my_data->stats->total_segments_received+=my_data->shared_memory->total_segments;      
             my_data->shared_memory->segments_sent = 0;
-            my_data->shared_memory->message_sent = false;
         }
        
         sem_post(&my_data->shared_memory->reader_sem);

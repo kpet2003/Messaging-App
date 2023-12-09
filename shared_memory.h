@@ -10,6 +10,7 @@
 #include <string.h>
 #include <semaphore.h>
 #include <stdbool.h>
+#include <sys/time.h>
 
 
 #define BUFFER_SIZE 15
@@ -18,10 +19,11 @@ struct memory {
     char buffer[BUFFER_SIZE];   // message buffer
     sem_t writer_sem;
     sem_t reader_sem;
-    bool message_sent;
     int segments_sent;
     int total_segments;
-    pthread_mutex_t mutex;
+    // structs for gettimeofday
+    struct timeval start;
+    struct timeval end;
 };
 
 typedef struct memory* Memory;
