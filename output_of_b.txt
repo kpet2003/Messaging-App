@@ -1,0 +1,13 @@
+hello process b
+how are you 
+i am good too
+do you want to keep the connection?
+#BYE#
+Process_b sent 4 messages
+Process_b sent 6 message segments
+Process_b sent 1.500000 message segments average
+Process_b received 5 messages
+Process_b received 8 message segments
+Process_b received 1.600000 message segments average
+Process_b waited 0.226013 seconds for the first segment average
+ 

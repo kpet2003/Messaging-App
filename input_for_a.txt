@@ -1,0 +1,6 @@
+hello process b
+how are you 
+i am good too
+do you want to keep the connection?
+#BYE#
+

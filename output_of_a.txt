@@ -1,0 +1,12 @@
+hello process a
+i am good too how about you?
+no
+#BYE#
+Process_a sent 5 messages
+Process_a sent 8 message segments
+Process_a sent 1.600000 message segments average
+Process_a received 4 messages
+Process_a received 6 message segments
+Process_a received 1.500000 message segments average
+Process_a waited 0.000013 seconds for the first segment average
+ 
